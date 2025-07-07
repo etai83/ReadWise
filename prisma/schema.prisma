@@ -1,0 +1,39 @@
+
+model User {
+  id          String   @id @default(uuid())
+  clerkId     String   @unique            // Clerk's user ID
+  quizzes     Quiz[]
+  createdAt   DateTime @default(now())
+}
+
+model Document {
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  title       String
+  text        String
+  createdAt   DateTime @default(now())
+  quizzes     Quiz[]
+}
+
+model Quiz {
+  id          String   @id @default(uuid())
+  document    Document @relation(fields: [documentId], references: [id])
+  documentId  String
+  score       Int
+  createdAt   DateTime @default(now())
+  questions   Question[]
+}
+
+model Question {
+  id          String   @id @default(uuid())
+  quiz        Quiz     @relation(fields: [quizId], references: [id])
+  quizId      String
+  prompt      String
+  correct     String
+  optionA     String
+  optionB     String
+  optionC     String
+  optionD     String
+  userAnswer  String?
+}
